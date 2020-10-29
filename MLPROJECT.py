@@ -90,7 +90,7 @@ patients = [patient1,patient2,patient3,patient4,patient5,patient6,patient7,patie
 for patient in patients:
 
     cgpaa.input['age']=patient['age']
-    cgpaa.input['birads']=cgpaa1.input['birads']=cgpaa.input['birads']= patient['birads']
+    cgpaa.input['birads']=cgpaa1.input['birads']=cgpaa2.input['birads']= patient['birads']
     cgpaa1.input['m_age']=patient['m_age']
     cgpaa2.input['invaded_n']=patient['invaded_n']
     
