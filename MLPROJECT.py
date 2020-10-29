@@ -6,13 +6,12 @@ from skfuzzy import control as ctrl
 age=ctrl.Antecedent(np.arange(10,71,1),'age') 
 m_age=ctrl.Antecedent(np.arange(10,15,1),'m_age')
 invaded_n=ctrl.Antecedent(np.arange(0,15,1),'invaded_n')
-birads=ctrl.Antecedent(np.arange(0,5,0.1),'birads') 
+birads=ctrl.Antecedent(np.arange(0,5,1),'birads') 
 bcrisk=ctrl.Consequent(np.arange(0,101,1),'bcrisk') 
 
 age['l']=fuzzy.trimf(age.universe,[0,15,20]) 
 age['m']=fuzzy.trimf(age.universe,[20,45,45])
 age['h']=fuzzy.trimf(age.universe,[45,70,70])
-
 
 birads['l']=fuzzy.trimf(birads.universe,[0,1.25,2.5])
 birads['m']=fuzzy.trimf(birads.universe,[2,3,3.5])
@@ -73,18 +72,34 @@ rule30=ctrl.Rule(invaded_n['h'] & birads['l'],bcrisk['l'])
 cg_calc2=ctrl.ControlSystem([rule21,rule22,rule23,rule24,rule25,rule26,rule27,rule28,rule29,rule30])
 cgpaa2=ctrl.ControlSystemSimulation(cg_calc2)
 
-cgpaa.input['age']=30
-cgpaa.input['birads']=cgpaa1.input['birads']=cgpaa.input['birads']= 4
-cgpaa1.input['m_age']=12
-cgpaa2.input['invaded_n']=2
 
-cgpaa.compute()
-cgpaa1.compute()
-cgpaa2.compute()
 
-print('Age Test : Degree Of Risk : ',cgpaa.output['bcrisk'])
-bcrisk.view(sim=cgpaa)
-print('Mentrual Age : Degree Of Risk : ',cgpaa1.output['bcrisk'])
-bcrisk.view(sim=cgpaa1)
-print('Invaded Auxilary Nodes : Degree Of Risk : ', cgpaa2.output['bcrisk'])
-bcrisk.view(sim=cgpaa2)
+patient1 = {'age':30, 'birads':4, "m_age":11, 'invaded_n':7}
+patient2 = {'age':25, 'birads':3, "m_age":12, 'invaded_n':12}
+patient3 = {'age':77, 'birads':1.2, "m_age":12.5, 'invaded_n':9}
+patient4 = {'age':36, 'birads':4.5, "m_age":13, 'invaded_n':4}
+patient5 = {'age':51, 'birads':3.5, "m_age":10.5, 'invaded_n':6}
+patient6 = {'age':14, 'birads':2.7, "m_age":14, 'invaded_n':14}
+patient7 = {'age':19, 'birads':1.9, "m_age":13, 'invaded_n':11}
+patient8 = {'age':42, 'birads':1.5, "m_age":15, 'invaded_n':8}
+patient9 = {'age':67, 'birads':5, "m_age":11.5, 'invaded_n':9}
+patient10 = {'age':55, 'birads':2.5, "m_age":12, 'invaded_n':10}
+
+patients = [patient1,patient2,patient3,patient4,patient5,patient6,patient7,patient8,patient9,patient10]
+
+for patient in patients:
+
+    cgpaa.input['age']=patient['age']
+    cgpaa.input['birads']=cgpaa1.input['birads']=cgpaa.input['birads']= patient['birads']
+    cgpaa1.input['m_age']=patient['m_age']
+    cgpaa2.input['invaded_n']=patient['invaded_n']
+    
+    cgpaa.compute()
+    cgpaa1.compute()
+    cgpaa2.compute()
+    
+    stat1=cgpaa.output['bcrisk']
+    stat2=cgpaa1.output['bcrisk']
+    stat3=cgpaa2.output['bcrisk']
+    
+    result = ((stat1+stat2+stat3))/3
