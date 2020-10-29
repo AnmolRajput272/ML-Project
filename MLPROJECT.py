@@ -9,7 +9,7 @@ invaded_n=ctrl.Antecedent(np.arange(0,15,1),'invaded_n')
 birads=ctrl.Antecedent(np.arange(0,5,1),'birads') 
 bcrisk=ctrl.Consequent(np.arange(0,101,1),'bcrisk') 
 
-age['l']=fuzzy.trimf(age.universe,[0,15,20]) 
+age['l']=fuzzy.trimf(age.universe,[10,20,20]) 
 age['m']=fuzzy.trimf(age.universe,[20,45,45])
 age['h']=fuzzy.trimf(age.universe,[45,70,70])
 
@@ -87,10 +87,11 @@ patient10 = {'age':55, 'birads':2.5, "m_age":12, 'invaded_n':10}
 
 patients = [patient1,patient2,patient3,patient4,patient5,patient6,patient7,patient8,patient9,patient10]
 
+print("0-40 : Low Risk \n40-70 : Medium Risk \n70-100 : High Risk \n\n")
 for patient in patients:
 
     cgpaa.input['age']=patient['age']
-    cgpaa.input['birads']=cgpaa1.input['birads']=cgpaa2.input['birads']= patient['birads']
+    cgpaa.input['birads']=cgpaa1.input['birads']=cgpaa.input['birads']= patient['birads']
     cgpaa1.input['m_age']=patient['m_age']
     cgpaa2.input['invaded_n']=patient['invaded_n']
     
@@ -101,5 +102,15 @@ for patient in patients:
     stat1=cgpaa.output['bcrisk']
     stat2=cgpaa1.output['bcrisk']
     stat3=cgpaa2.output['bcrisk']
-    
+    print("Age Risk : ",end='')
+    print(stat1,end="\n")
+    print("Menstrual Age Risk : ",end='')
+    print(stat2,end="\n")
+    print("Invaded Nodes Risk : ",end='')
+    print(stat3,end="\n")
+#     bcrisk.view(sim=cgpaa)
+#     bcrisk.view(sim=cgpaa1)
+#     bcrisk.view(sim=cgpaa2)
     result = ((stat1+stat2+stat3))/3
+    print("The Risk Percentage Is",result)
+    print('\n')
